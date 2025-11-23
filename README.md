@@ -1,18 +1,25 @@
-# React + Vite
+# CSE-335-Group-6
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Stock Portfolio Tracker — Group 6  
+Members: Mohammad Musa, Irah Rajandran, Saei Stanley, Inesh
 
-Currently, two official plugins are available:
+A web-based application for tracking and managing stock portfolios.  
+Core features include:
+- User authentication
+- Portfolio creation
+- Real-time stock data via API integration
+- Watch alerts
+- Frontend (React + Vite)
+- Backend (SQL with role-based access and encryption)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Frontend Setup (React + Vite)
 
-## React Compiler
+This project uses React with Vite for fast development and hot module replacement (HMR).  
+Key tools:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) for Fast Refresh
+- ESLint for linting and code quality
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Getting Started
+```bash
+npm install
+npm run dev
