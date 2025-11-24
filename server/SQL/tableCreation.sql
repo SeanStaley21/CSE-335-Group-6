@@ -71,9 +71,9 @@ CREATE INDEX idx_holdings_stock_id ON holdings(stock_id);
 
 -- Sample data inserts
 INSERT INTO users (username, email, password_hash, first_name, last_name) VALUES
-('mohamed_muse', 'momuse01@louisville.edu', '$2b$12$hashed_password_here', 'Mohamed', 'Muse'),
-('inesh_rajwade', 'imrajw01@louisville.edu', '$2b$12$hashed_password_here', 'Inesh', 'Rajwade'),
-('sean_staley', 'sstaley01@louisville.edu', '$2b$12$hashed_password_here', 'Sean', 'Staley');
+('mohamed_muse', 'momuse01@louisville.edu', 'mohamedMuse', 'Mohamed', 'Muse'),
+('inesh_rajwade', 'imrajw01@louisville.edu', 'ineshRajwade', 'Inesh', 'Rajwade'),
+('sean_staley', 'sstaley01@louisville.edu', 'seanStaley', 'Sean', 'Staley');
 
 INSERT INTO stocks (symbol, company_name, sector, industry, current_price) VALUES
 ('AAPL', 'Apple Inc.', 'Technology', 'Consumer Electronics', 175.50),
