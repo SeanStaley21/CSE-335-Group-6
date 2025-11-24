@@ -1,6 +1,7 @@
 -- Stock Portfolio Database Schema
--- Created: November 9, 2025
--- Description: MySQL tables for managing users, portfolios, stocks, and holdings
+
+-- Use the Group 6 database
+USE `Group 6`;
 
 -- Users table - stores user account information
 CREATE TABLE users (
