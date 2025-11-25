@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { portfolioAPI } from '../services/api';
 
 export default function PortfolioList() {
   const [portfolios, setPortfolios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Hardcoded user ID for now - replace with actual auth later
-  const userId = 1;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchPortfolios() {
+    // Check if user is logged in
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      navigate('/login');
+      return;
+    }
+    async function fetchPortfolios(userId) {
       try {
         setLoading(true);
         const data = await portfolioAPI.getByUser(userId);
@@ -25,8 +29,8 @@ export default function PortfolioList() {
       }
     }
 
-    fetchPortfolios();
-  }, [userId]);
+    fetchPortfolios(userId);
+  }, [navigate]);
 
   if (loading) {
     return (
