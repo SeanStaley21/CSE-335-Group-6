@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 function Navbar() {
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    // Check if user is logged in
+    // Check if user is logged in on mount and route changes
     const storedUsername = localStorage.getItem('username');
     setUsername(storedUsername);
-  }, []);
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('userId');
