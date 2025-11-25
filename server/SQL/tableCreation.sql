@@ -70,10 +70,11 @@ CREATE INDEX idx_holdings_portfolio_id ON holdings(portfolio_id);
 CREATE INDEX idx_holdings_stock_id ON holdings(stock_id);
 
 -- Sample data inserts
+-- Passwords: mohamedMuse, ineshRajwade, seanStaley (bcrypt hashed with 12 rounds)
 INSERT INTO users (username, email, password_hash, first_name, last_name) VALUES
-('mohamed_muse', 'momuse01@louisville.edu', 'mohamedMuse', 'Mohamed', 'Muse'),
-('inesh_rajwade', 'imrajw01@louisville.edu', 'ineshRajwade', 'Inesh', 'Rajwade'),
-('sean_staley', 'sstaley01@louisville.edu', 'seanStaley', 'Sean', 'Staley');
+('mohamed_muse', 'momuse01@louisville.edu', '$2b$12$ADKC8krRWX7UduxJxGtoyO1tJV9.BES5.zyCI9hSUGx8GfBaKKQvW', 'Mohamed', 'Muse'),
+('inesh_rajwade', 'imrajw01@louisville.edu', '$2b$12$.EGiahqNRKGlRd.SYEVx8OsmZvL5srdJlWbs.QkHVd4vz5vVTr0Zy', 'Inesh', 'Rajwade'),
+('sean_staley', 'sstaley01@louisville.edu', '$2b$12$PaFizz8rt4BjGetBFRDHUeW3vx6f8mUg/drq80k99wrwfzcFqAM1a', 'Sean', 'Staley');
 
 INSERT INTO stocks (symbol, company_name, sector, industry, current_price) VALUES
 ('AAPL', 'Apple Inc.', 'Technology', 'Consumer Electronics', 175.50),

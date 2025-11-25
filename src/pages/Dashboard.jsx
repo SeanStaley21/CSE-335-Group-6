@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PortfolioCard from '../components/PortfolioCard';
 import StockChart from '../components/StockChart';
 import AlertList from '../components/AlertList';
@@ -21,12 +22,16 @@ export default function Dashboard() {
   const [dashboardStats, setDashboardStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Hardcoded user ID for now - replace with actual auth later
-  const userId = 1;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchDashboardData() {
+    // Check if user is logged in
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      navigate('/login');
+      return;
+    }
+    async function fetchDashboardData(userId) {
       try {
         setLoading(true);
         
@@ -49,8 +54,8 @@ export default function Dashboard() {
       }
     }
 
-    fetchDashboardData();
-  }, [userId]);
+    fetchDashboardData(userId);
+  }, [navigate]);
 
   if (loading) {
     return (

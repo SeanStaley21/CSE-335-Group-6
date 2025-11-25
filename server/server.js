@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import pool from './db.js';
 
 dotenv.config();
@@ -15,6 +16,50 @@ app.use(express.json());
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
+});
+
+// ==================== AUTH ROUTES ====================
+
+// Login endpoint
+app.post('/api/auth/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  try {
+    // Get user from database
+    const [users] = await pool.query(
+      'SELECT user_id, username, email, password_hash, first_name, last_name, is_active FROM users WHERE username = ? AND is_active = TRUE',
+      [username]
+    );
+
+    if (users.length === 0) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const user = users[0];
+
+    // Compare password with hash
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Remove password_hash from response
+    delete user.password_hash;
+
+    // Return user info (in a real app, you'd also return a JWT token)
+    res.json({
+      message: 'Login successful',
+      user: user
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
 });
 
 // ==================== USER ROUTES ====================
