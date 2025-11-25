@@ -9,20 +9,31 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Dark mode colors (default) */
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: #9ca3af;
+  --bg-primary: #242424;
+  --bg-secondary: #1f2937;
+  --bg-card: #374151;
+  --border-color: #4b5563;
 }
 
-/* Dark mode (default) */
-:root {
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-}
-
-/* Light mode */
+/* Light mode colors */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --text-primary: #213547;
+    --text-secondary: #6b7280;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-card: #ffffff;
+    --border-color: #e5e7eb;
   }
+}
+
+:root {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 }
 
 a {

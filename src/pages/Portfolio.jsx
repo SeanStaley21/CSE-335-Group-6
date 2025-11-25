@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import StockChart from '../components/StockChart';
 import AlertList from '../components/AlertList';
 import TransactionTable from '../components/TransactionTable';
-import { portfolioAPI, holdingAPI } from '../services/api';
+import { portfolioAPI, holdingsAPI } from '../services/api';
 
 export default function Portfolio() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ export default function Portfolio() {
         // Fetch portfolio info and holdings in parallel
         const [portfolioData, holdingsData] = await Promise.all([
           portfolioAPI.getById(id),
-          holdingAPI.getByPortfolio(id)
+          holdingsAPI.getByPortfolio(id)
         ]);
 
         setPortfolio(portfolioData);
@@ -88,23 +88,24 @@ export default function Portfolio() {
         gap: '16px',
         marginTop: '24px',
         padding: '20px',
-        backgroundColor: '#f9fafb',
-        borderRadius: '12px'
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: '12px',
+        border: '1px solid var(--border-color)'
       }}>
         <div>
-          <div style={{ fontSize: '14px', color: '#6b7280' }}>Market Value</div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '4px' }}>
+          <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Market Value</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '4px', color: 'var(--text-primary)' }}>
             ${totalMarketValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '14px', color: '#6b7280' }}>Cash Balance</div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '4px' }}>
+          <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Cash Balance</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '4px', color: 'var(--text-primary)' }}>
             ${(portfolio.cash_balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '14px', color: '#6b7280' }}>Total Gain/Loss</div>
+          <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Total Gain/Loss</div>
           <div style={{ 
             fontSize: '24px', 
             fontWeight: 'bold', 
@@ -130,7 +131,7 @@ export default function Portfolio() {
           <div style={{ marginTop: '16px', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', textAlign: 'left' }}>
                   <th style={{ padding: '12px' }}>Symbol</th>
                   <th style={{ padding: '12px' }}>Company</th>
                   <th style={{ padding: '12px', textAlign: 'right' }}>Quantity</th>
@@ -146,7 +147,7 @@ export default function Portfolio() {
                   const gainLossPercent = holding.gain_loss_percentage || 0;
                   
                   return (
-                    <tr key={holding.holding_id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                    <tr key={holding.holding_id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                       <td style={{ padding: '12px', fontWeight: 'bold' }}>{holding.symbol}</td>
                       <td style={{ padding: '12px' }}>{holding.company_name}</td>
                       <td style={{ padding: '12px', textAlign: 'right' }}>{holding.quantity}</td>

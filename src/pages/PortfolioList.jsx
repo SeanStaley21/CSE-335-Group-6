@@ -80,11 +80,12 @@ export default function PortfolioList() {
               to={`/portfolio/${p.portfolio_id}`}
               style={{
                 display: 'block',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '16px',
                 textDecoration: 'none',
-                color: '#111827',
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--bg-card)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 transition: 'box-shadow 0.2s',
               }}
@@ -100,7 +101,7 @@ export default function PortfolioList() {
                 <p style={{ 
                   margin: '8px 0 0', 
                   fontSize: '14px', 
-                  color: '#6b7280',
+                  color: 'var(--text-secondary)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap'
@@ -111,10 +112,10 @@ export default function PortfolioList() {
               <p style={{ margin: '12px 0 0', fontSize: '18px', fontWeight: 'bold' }}>
                 ${(p.total_value || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </p>
-              <p style={{ margin: '4px 0 0', fontSize: '14px', color: '#6b7280' }}>
+              <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Cash: ${(p.cash_balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </p>
-              <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#9ca3af' }}>
+              <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--text-secondary)' }}>
                 Created: {new Date(p.created_at).toLocaleDateString()}
               </p>
             </Link>

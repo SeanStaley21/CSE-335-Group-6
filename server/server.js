@@ -272,14 +272,23 @@ app.delete('/api/holdings/:id', async (req, res) => {
 // Get dashboard statistics for a user
 app.get('/api/users/:userId/dashboard', async (req, res) => {
   try {
-    // Get total portfolio value
+    // Get portfolio count and cash balance
     const [portfolioStats] = await pool.query(`
       SELECT 
         COUNT(*) as total_portfolios,
-        SUM(total_value) as total_portfolio_value,
         SUM(cash_balance) as total_cash
       FROM portfolios 
       WHERE user_id = ? AND is_active = TRUE
+    `, [req.params.userId]);
+    
+    // Calculate total value from actual holdings
+    const [holdingsValue] = await pool.query(`
+      SELECT 
+        COALESCE(SUM(s.current_price * h.quantity), 0) as total_portfolio_value
+      FROM holdings h
+      JOIN stocks s ON h.stock_id = s.stock_id
+      JOIN portfolios p ON h.portfolio_id = p.portfolio_id
+      WHERE p.user_id = ? AND p.is_active = TRUE
     `, [req.params.userId]);
     
     // Get total holdings count
@@ -292,6 +301,7 @@ app.get('/api/users/:userId/dashboard', async (req, res) => {
     
     res.json({
       ...portfolioStats[0],
+      total_portfolio_value: holdingsValue[0].total_portfolio_value,
       ...holdingsStats[0]
     });
   } catch (error) {
