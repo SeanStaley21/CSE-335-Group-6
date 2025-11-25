@@ -16,7 +16,10 @@ export default function Portfolio() {
   useEffect(() => {
     // Check if user is logged in
     const userId = localStorage.getItem('userId');
+    console.log('Portfolio page - User ID:', userId, 'Portfolio ID:', id);
+    
     if (!userId) {
+      console.log('No user logged in, redirecting to login');
       navigate('/login');
       return;
     }
@@ -24,12 +27,16 @@ export default function Portfolio() {
     async function fetchPortfolioData() {
       try {
         setLoading(true);
+        console.log('Fetching portfolio data for ID:', id);
         
         // Fetch portfolio info and holdings in parallel
         const [portfolioData, holdingsData] = await Promise.all([
           portfolioAPI.getById(id),
           holdingsAPI.getByPortfolio(id)
         ]);
+
+        console.log('Portfolio data:', portfolioData);
+        console.log('Holdings data:', holdingsData);
 
         setPortfolio(portfolioData);
         setHoldings(holdingsData);
@@ -48,7 +55,7 @@ export default function Portfolio() {
   if (loading) {
     return (
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '24px', textAlign: 'center' }}>
-        <h2>Loading portfolio...</h2>
+        <h2 style={{ color: 'var(--text-primary)' }}>Loading portfolio...</h2>
       </div>
     );
   }
@@ -56,8 +63,15 @@ export default function Portfolio() {
   if (error || !portfolio) {
     return (
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '24px' }}>
-        <h1 style={{ textAlign: 'center' }}>Portfolio not found</h1>
-        <p style={{ textAlign: 'center' }}>The portfolio "{id}" doesn't exist.</p>
+        <h1 style={{ textAlign: 'center', color: 'var(--text-primary)' }}>Portfolio not found</h1>
+        <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
+          The portfolio "{id}" doesn't exist or failed to load.
+        </p>
+        {error && (
+          <p style={{ textAlign: 'center', color: '#dc2626', marginTop: '8px' }}>
+            Error: {error}
+          </p>
+        )}
         <div style={{ textAlign: 'center', marginTop: '16px' }}>
           <Link to="/portfolio" style={{ color: '#2563eb' }}>Back to portfolios</Link>
         </div>
@@ -66,8 +80,8 @@ export default function Portfolio() {
   }
 
   // Calculate total portfolio value
-  const totalMarketValue = holdings.reduce((sum, h) => sum + (h.market_value || 0), 0);
-  const totalCost = holdings.reduce((sum, h) => sum + (h.average_cost * h.quantity), 0);
+  const totalMarketValue = holdings.reduce((sum, h) => sum + parseFloat(h.market_value || 0), 0);
+  const totalCost = holdings.reduce((sum, h) => sum + (parseFloat(h.average_cost || 0) * parseFloat(h.quantity || 0)), 0);
   const totalGainLoss = totalMarketValue - totalCost;
   const totalGainLossPercent = totalCost > 0 ? ((totalGainLoss / totalCost) * 100) : 0;
 
@@ -143,8 +157,11 @@ export default function Portfolio() {
               </thead>
               <tbody>
                 {holdings.map((holding) => {
-                  const gainLoss = holding.total_gain_loss || 0;
-                  const gainLossPercent = holding.gain_loss_percentage || 0;
+                  const gainLoss = parseFloat(holding.total_gain_loss) || 0;
+                  const gainLossPercent = parseFloat(holding.gain_loss_percentage) || 0;
+                  const avgCost = parseFloat(holding.average_cost) || 0;
+                  const currentPrice = parseFloat(holding.current_price) || 0;
+                  const marketValue = parseFloat(holding.market_value) || 0;
                   
                   return (
                     <tr key={holding.holding_id} style={{ borderBottom: '1px solid var(--border-color)' }}>
@@ -152,13 +169,13 @@ export default function Portfolio() {
                       <td style={{ padding: '12px' }}>{holding.company_name}</td>
                       <td style={{ padding: '12px', textAlign: 'right' }}>{holding.quantity}</td>
                       <td style={{ padding: '12px', textAlign: 'right' }}>
-                        ${holding.average_cost.toFixed(2)}
+                        ${avgCost.toFixed(2)}
                       </td>
                       <td style={{ padding: '12px', textAlign: 'right' }}>
-                        ${holding.current_price.toFixed(2)}
+                        ${currentPrice.toFixed(2)}
                       </td>
                       <td style={{ padding: '12px', textAlign: 'right' }}>
-                        ${(holding.market_value || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        ${marketValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                       </td>
                       <td style={{ 
                         padding: '12px', 
@@ -166,7 +183,7 @@ export default function Portfolio() {
                         color: gainLoss >= 0 ? '#15803d' : '#dc2626',
                         fontWeight: '500'
                       }}>
-                        {gainLoss >= 0 ? '+' : ''}${Math.abs(gainLoss).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        {gainLoss >= 0 ? '+' : ''}${Math.abs(gainLoss).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                         <div style={{ fontSize: '12px' }}>
                           ({gainLossPercent >= 0 ? '+' : ''}{gainLossPercent.toFixed(2)}%)
                         </div>

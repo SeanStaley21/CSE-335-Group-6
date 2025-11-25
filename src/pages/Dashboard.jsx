@@ -6,16 +6,6 @@ import AlertList from '../components/AlertList';
 import TransactionTable from '../components/TransactionTable';
 import { userAPI, portfolioAPI } from '../services/api';
 
-const dummyAlerts = [
-  { symbol: 'AAPL', condition: '>', threshold: 150 },
-  { symbol: 'TSLA', condition: '<', threshold: 200 }
-];
-
-const dummyTransactions = [
-  { date: '2025-11-01', symbol: 'AAPL', type: 'Buy', amount: 10 },
-  { date: '2025-11-03', symbol: 'TSLA', type: 'Sell', amount: 5 }
-];
-
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
@@ -306,7 +296,15 @@ export default function Dashboard() {
             }}>
               Active Alerts
             </h3>
-            <AlertList alerts={dummyAlerts} />
+            <AlertList alerts={[]} />
+            <p style={{ 
+              fontSize: '14px', 
+              color: 'var(--text-secondary)',
+              textAlign: 'center',
+              marginTop: '12px'
+            }}>
+              Alert functionality coming soon!
+            </p>
           </div>
 
           <div style={{
@@ -323,21 +321,14 @@ export default function Dashboard() {
             }}>
               Recent Activity
             </h3>
-            <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-              {dummyTransactions.slice(0, 3).map((tx, i) => (
-                <div key={i} style={{ 
-                  padding: '12px',
-                  borderBottom: i < 2 ? '1px solid var(--border-color)' : 'none',
-                  display: 'flex',
-                  justifyContent: 'space-between'
-                }}>
-                  <span>
-                    <strong style={{ color: 'var(--text-primary)' }}>{tx.symbol}</strong> - {tx.type}
-                  </span>
-                  <span>{tx.amount} shares</span>
-                </div>
-              ))}
-            </div>
+            <p style={{ 
+              fontSize: '14px', 
+              color: 'var(--text-secondary)',
+              textAlign: 'center',
+              padding: '20px'
+            }}>
+              Transaction history coming soon!
+            </p>
           </div>
         </div>
       </div>

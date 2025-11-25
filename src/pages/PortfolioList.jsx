@@ -109,11 +109,11 @@ export default function PortfolioList() {
                   {p.description}
                 </p>
               )}
-              <p style={{ margin: '12px 0 0', fontSize: '18px', fontWeight: 'bold' }}>
-                ${(p.total_value || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              <p style={{ margin: '12px 0 0', fontSize: '18px', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+                Cash Balance
               </p>
-              <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                Cash: ${(p.cash_balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              <p style={{ margin: '4px 0 0', fontSize: '20px', fontWeight: 'bold', color: '#10b981' }}>
+                ${parseFloat(p.cash_balance || 0).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
               </p>
               <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--text-secondary)' }}>
                 Created: {new Date(p.created_at).toLocaleDateString()}
