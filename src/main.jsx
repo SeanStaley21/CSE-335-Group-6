@@ -7,6 +7,7 @@ import App from './App';
 import Dashboard from './pages/Dashboard';
 import PortfolioList from './pages/PortfolioList';
 import Portfolio from './pages/Portfolio';
+import Login from './pages/login';
 
 import './index.css';
 
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Layout>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/portfolio" element={<PortfolioList />} />
           <Route path="/portfolio/:id" element={<Portfolio />} />

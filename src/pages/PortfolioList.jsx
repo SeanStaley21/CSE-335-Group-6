@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { portfolioAPI } from '../services/api';
 
 export default function PortfolioList() {
   const [portfolios, setPortfolios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Hardcoded user ID for now - replace with actual auth later
-  const userId = 1;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchPortfolios() {
+    // Check if user is logged in
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      navigate('/login');
+      return;
+    }
+    async function fetchPortfolios(userId) {
       try {
         setLoading(true);
         const data = await portfolioAPI.getByUser(userId);
@@ -25,8 +29,8 @@ export default function PortfolioList() {
       }
     }
 
-    fetchPortfolios();
-  }, [userId]);
+    fetchPortfolios(userId);
+  }, [navigate]);
 
   if (loading) {
     return (
@@ -76,11 +80,12 @@ export default function PortfolioList() {
               to={`/portfolio/${p.portfolio_id}`}
               style={{
                 display: 'block',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '16px',
                 textDecoration: 'none',
-                color: '#111827',
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--bg-card)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 transition: 'box-shadow 0.2s',
               }}
@@ -96,7 +101,7 @@ export default function PortfolioList() {
                 <p style={{ 
                   margin: '8px 0 0', 
                   fontSize: '14px', 
-                  color: '#6b7280',
+                  color: 'var(--text-secondary)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap'
@@ -104,13 +109,13 @@ export default function PortfolioList() {
                   {p.description}
                 </p>
               )}
-              <p style={{ margin: '12px 0 0', fontSize: '18px', fontWeight: 'bold' }}>
-                ${(p.total_value || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              <p style={{ margin: '12px 0 0', fontSize: '18px', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+                Cash Balance
               </p>
-              <p style={{ margin: '4px 0 0', fontSize: '14px', color: '#6b7280' }}>
-                Cash: ${(p.cash_balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              <p style={{ margin: '4px 0 0', fontSize: '20px', fontWeight: 'bold', color: '#10b981' }}>
+                ${parseFloat(p.cash_balance || 0).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
               </p>
-              <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#9ca3af' }}>
+              <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--text-secondary)' }}>
                 Created: {new Date(p.created_at).toLocaleDateString()}
               </p>
             </Link>
