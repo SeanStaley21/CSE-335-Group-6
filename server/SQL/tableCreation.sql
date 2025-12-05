@@ -1,6 +1,5 @@
--- Stock Portfolio Database Schema
+--Main data base Schema
 
--- Use the Group 6 database
 USE `Group 6`;
 
 -- Users table - stores user account information
@@ -61,7 +60,7 @@ CREATE TABLE holdings (
     CHECK (average_cost > 0)
 );
 
--- Create indexes for better query performance
+-- Created indexes for better query performance
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_stocks_symbol ON stocks(symbol);
@@ -89,10 +88,9 @@ INSERT INTO portfolios (user_id, portfolio_name, description, cash_balance) VALU
 (3, 'Balanced Portfolio', 'Diversified investment strategy', 8000.00);
 
 INSERT INTO holdings (portfolio_id, stock_id, quantity, average_cost) VALUES
-(1, 1, 50, 170.00),  -- Mohamed's Growth Portfolio: 50 AAPL shares
-(1, 2, 25, 140.00),  -- Mohamed's Growth Portfolio: 25 GOOGL shares
-(2, 3, 30, 375.00),  -- Inesh's Tech Portfolio: 30 MSFT shares
-(2, 4, 20, 245.00),  -- Inesh's Tech Portfolio: 20 TSLA shares
-(3, 1, 40, 172.00),  -- Sean's Balanced Portfolio: 40 AAPL shares
-(3, 3, 15, 380.00);  -- Sean's Balanced Portfolio: 15 MSFT shares
-
+(1, 1, 50, 170.00),  
+(1, 2, 25, 140.00),  
+(2, 3, 30, 375.00),  
+(2, 4, 20, 245.00),  
+(3, 1, 40, 172.00),  
+(3, 3, 15, 380.00);  

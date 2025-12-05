@@ -1,8 +1,5 @@
 -- Stock Portfolio Database Views
--- These views provide convenient ways to query and display related data
 
--- View: User Portfolio Summary
--- Shows each user with their total number of portfolios and combined portfolio value
 CREATE OR REPLACE VIEW view_user_portfolio_summary AS
 SELECT 
     u.user_id,
@@ -19,8 +16,6 @@ LEFT JOIN portfolios p ON u.user_id = p.user_id AND p.is_active = TRUE
 WHERE u.is_active = TRUE
 GROUP BY u.user_id, u.username, u.email, u.first_name, u.last_name;
 
--- View: Portfolio Holdings Detail
--- Shows all holdings with stock information and calculated values
 CREATE OR REPLACE VIEW view_portfolio_holdings_detail AS
 SELECT 
     p.portfolio_id,
@@ -49,8 +44,6 @@ JOIN stocks s ON h.stock_id = s.stock_id
 WHERE p.is_active = TRUE AND s.is_active = TRUE
 ORDER BY p.portfolio_id, s.symbol;
 
--- View: Portfolio Performance Summary
--- Shows portfolio-level performance metrics
 CREATE OR REPLACE VIEW view_portfolio_performance AS
 SELECT 
     p.portfolio_id,
@@ -81,8 +74,6 @@ WHERE p.is_active = TRUE
 GROUP BY p.portfolio_id, p.portfolio_name, p.user_id, u.username, u.first_name, u.last_name, 
          p.cash_balance, p.total_value, p.created_at, p.updated_at;
 
--- View: Stock Holdings Across All Portfolios
--- Shows which stocks are held and by how many portfolios
 CREATE OR REPLACE VIEW view_stock_popularity AS
 SELECT 
     s.stock_id,
@@ -101,8 +92,6 @@ WHERE s.is_active = TRUE
 GROUP BY s.stock_id, s.symbol, s.company_name, s.sector, s.current_price
 ORDER BY total_market_value DESC;
 
--- View: Top Performing Holdings
--- Shows the best performing individual holdings across all portfolios
 CREATE OR REPLACE VIEW view_top_performing_holdings AS
 SELECT 
     u.username,
@@ -123,8 +112,6 @@ JOIN stocks s ON h.stock_id = s.stock_id
 WHERE p.is_active = TRUE AND s.is_active = TRUE
 ORDER BY gain_loss_percentage DESC;
 
--- View: User Activity Summary
--- Shows user account details with activity metrics
 CREATE OR REPLACE VIEW view_user_activity AS
 SELECT 
     u.user_id,
@@ -144,8 +131,6 @@ LEFT JOIN holdings h ON p.portfolio_id = h.portfolio_id
 WHERE u.is_active = TRUE
 GROUP BY u.user_id, u.username, u.email, u.first_name, u.last_name, u.created_at, u.is_active;
 
--- View: Simple Stock List
--- Basic view of all active stocks with current prices
 CREATE OR REPLACE VIEW view_stocks_list AS
 SELECT 
     stock_id,
@@ -160,8 +145,6 @@ FROM stocks
 WHERE is_active = TRUE
 ORDER BY symbol;
 
--- View: User Portfolios List
--- Simple list of all portfolios with basic info
 CREATE OR REPLACE VIEW view_user_portfolios AS
 SELECT 
     p.portfolio_id,
@@ -179,30 +162,3 @@ FROM portfolios p
 JOIN users u ON p.user_id = u.user_id
 WHERE p.is_active = TRUE AND u.is_active = TRUE
 ORDER BY u.username, p.portfolio_name;
-
--- USAGE EXAMPLES:
--- ==================
-
--- View all user portfolio summaries:
--- SELECT * FROM view_user_portfolio_summary;
-
--- View holdings for a specific portfolio:
--- SELECT * FROM view_portfolio_holdings_detail WHERE portfolio_id = 1;
-
--- View portfolio performance:
--- SELECT * FROM view_portfolio_performance;
-
--- View most popular stocks:
--- SELECT * FROM view_stock_popularity ORDER BY held_in_portfolios DESC;
-
--- View top performing holdings:
--- SELECT * FROM view_top_performing_holdings LIMIT 10;
-
--- View user activity:
--- SELECT * FROM view_user_activity;
-
--- View all stocks:
--- SELECT * FROM view_stocks_list;
-
--- View all portfolios:
--- SELECT * FROM view_user_portfolios;
