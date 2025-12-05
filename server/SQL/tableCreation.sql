@@ -1,4 +1,4 @@
---Main data base Schema
+-- Main data base Schema
 
 USE `Group 6`;
 
